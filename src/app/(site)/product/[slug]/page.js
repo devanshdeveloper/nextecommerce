@@ -17,8 +17,11 @@ export default async function ProductPage({ params }) {
       </div>
     );
   }
+  
+
   const { name, productImage, price, reviews, description, _id, ...props } =
-    product;
+  product;
+
   return (
     <div className="flex flex-col lg:flex-row w-[min(1000px,90vw)] mx-auto pt-10 gap-16">
       <Image
@@ -39,12 +42,16 @@ export default async function ProductPage({ params }) {
         <div className="">
           <div className="text-lg md:text-xl lg:text-2xl">Reviews</div>
           <div className="space-y-2">
-            {reviews.map((review) => (
-              <div key={review._id}>
-                <div className="font-medium">{review.user}</div>
-                <div>{review.review}</div>
-              </div>
-            ))}
+            {reviews ? (
+              reviews.map((review) => (
+                <div key={review._id}>
+                  <div className="font-medium">{review.user}</div>
+                  <div>{review.review}</div>
+                </div>
+              ))
+            ) : (
+              <div>No Reviews</div>
+            )}
           </div>
         </div>
       </div>

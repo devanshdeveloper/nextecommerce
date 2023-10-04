@@ -19,6 +19,7 @@ export function getProducts() {
     slug
   }`);
 }
+
 export function getProductsById(ids) {
   return client.fetch(
     groq`*[_type=="product" && _id in $ids]{
@@ -56,6 +57,48 @@ export function getProductById(id) {
   }`,
     { id }
   );
+}
+export function getCategory(category) {
+  return client.fetch(groq`*[_type=="category"&&name==$category]{
+    name,
+    _id,
+    slug,
+    products[]-> {
+      _id,
+      name, 
+      productImage,
+      price,
+      description,
+    },
+    description,
+  }`, {
+    category,
+  });
+}
+export function getCategories() {
+  return client.fetch(groq`*[_type=="category"]{
+    name,
+    _id,
+    slug,
+    products[]-> {
+      _id,
+      name, 
+      productImage,
+      price,
+      description,
+    },
+    description,
+  }`);
+}
+
+export function addProduct({ name, productImage, price, description }) {
+  return client.create({
+    _type: "product",
+    productImage: getImageURL(productImage),
+    name,
+    price,
+    description,
+  });
 }
 
 export function getImageURL(source) {

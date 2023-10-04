@@ -8,16 +8,19 @@ datasource db {
 }
 
 model User {
-    id            String     @id @default(uuid())
-    name          String
-    email         String?    @unique
-    emailVerified DateTime?  @map("email_verified")
-    image         String?
-    cart          CartItem[]
-    createdAt     DateTime   @default(now())
-    updatedAt     DateTime   @updatedAt
-    accounts      Account[]
-    sessions      Session[]
+    id              String     @id @default(uuid())
+    name            String
+    email           String?    @unique
+    emailVerified   DateTime?  @map("email_verified")
+    image           String?
+    cart            CartItem[]
+    shippingAddress String?
+    phoneNumber     Int?
+    createdAt       DateTime   @default(now())
+    updatedAt       DateTime   @updatedAt
+    accounts        Account[]
+    sessions        Session[]
+    Order           Order[]
 
     @@map("users")
 }
@@ -26,10 +29,27 @@ model CartItem {
     id        String   @id @default(cuid())
     productId String
     quantity  Int      @default(1)
-    User      User?    @relation(fields: [userId], references: [id])
-    userId    String?
+    User      User     @relation(fields: [userId], references: [id])
+    userId    String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    Order     Order?   @relation(fields: [orderId], references: [id])
+    orderId   String?
+}
+
+model Order {
+    id                  String     @id @default(cuid())
+    User                User?      @relation(fields: [userId], references: [id])
+    userId              String?
+    products            CartItem[]
+    payment_status      String?
+    shipping_status     String?
+    amount              Int
+    razorpay_order_id   String
+    razorpay_payment_id String
+    razorpay_signature  String
+    createdAt           DateTime   @default(now())
+    updatedAt           DateTime   @updatedAt
 }
 
 model Account {

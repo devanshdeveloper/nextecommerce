@@ -5,10 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 function Navbar() {
+  // hooks
   const { data: auth, status } = useSession();
-  console.log(auth, status);
+
   return (
-    <header className="fixed w-full h-16 bg-brand-700 text-white flex items-center justify-around">
+    <header className="fixed w-full h-16 bg-brand-700 text-white flex items-center justify-around z-50">
       <div className="text-xl">Ecommerce</div>
       <nav>
         <ul className="flex gap-5 items-center">
